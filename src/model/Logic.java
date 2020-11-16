@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -11,16 +9,13 @@ public class Logic {
 	private int rows = 11;
 	private int colums = 22;
 	private Tile tileArray[][] = new Tile[rows][colums];
-	private ArrayList<Tile> tileList = new ArrayList<Tile>();
 	private float tilezeroX = 59;
 	private float tilezeroY = 115;
 	private float tileWidth = 49;
 	private Player player;
 	private PImage playerImage;
-	boolean lefCollision = false;
-	boolean RightCollision = false;
-	boolean TopCollision = false;
-	boolean BottomCollision = false;
+	private int playerMatX = 7;
+	private int playerMatY = 7;
 
 	public Logic(PApplet app) {
 		this.app = app;
@@ -29,7 +24,8 @@ public class Logic {
 	// Set up
 	public void setPlayer() {
 		this.playerImage = app.loadImage("../img/player.png");
-		this.player = new Player(410, 456, 32, 45, 7, 3, 0, this.playerImage, this.app);
+		this.player = new Player(tilezeroX + tileWidth * playerMatX, tilezeroY + tileWidth * playerMatY, 32, 45, 49, 3,
+				0, this.playerImage, this.app);
 	}
 
 	public void setTiles() {
@@ -155,17 +151,13 @@ public class Logic {
 		this.tileArray[10][16].setType(1);
 		this.tileArray[10][17].setType(1);
 
-		for (int i = 0; i < this.rows; i++) {
-			for (int j = 0; j < this.colums; j++) {
-				this.tileList.add(tileArray[i][j]);
-			}
-		}
-
 	}
 
 	public void paintScreen() {
-		for (int i = 0; i < this.tileList.size(); i++) {
-			this.tileList.get(i).paint();
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.colums; j++) {
+				this.tileArray[i][j].paint();
+			}
 		}
 		this.player.paint();
 	}
@@ -177,71 +169,55 @@ public class Logic {
 		float playerWidth = this.player.getWidth();
 		float playerHeight = this.player.getHeight();
 
-		for (int i = 0; i < this.tileList.size(); i++) {
+		/*for (int i = 0; i < this.tileList.size(); i++) {
 			Tile tile = this.tileList.get(i);
 			float tileX = this.tileList.get(i).getPosX();
 			float tileY = this.tileList.get(i).getPosY();
 			float tileWidth = this.tileList.get(i).getWidth();
 			float tileHeight = this.tileList.get(i).getHeight();
 
-			if (playerX + playerWidth > tileX && playerX < tileX + tileWidth && playerY + playerHeight > tileY
-					&& playerY < tileY + tileHeight && tile.getType() == 0) {
-				//System.out.println("xd");
-			}
+			if (playerX > tileX && playerX > tileX + tileWidth && playerY > tileY && playerY < tileY + tileHeight
+					&& tile.getType() == 1) {
 
-		}
+			}
+			
+		}*/
 
 	}
 
 	public void keyEvents() {
-
-		float playerX = this.player.getPosX();
-		float playerY = this.player.getPosY();
-		float playerWidth = this.player.getWidth();
-		float playerHeight = this.player.getHeight();
-
-		for (int i = 0; i < this.tileList.size(); i++) {
-			Tile tile = this.tileList.get(i);
-			float tileX = this.tileList.get(i).getPosX();
-			float tileY = this.tileList.get(i).getPosY();
-			float tileWidth = this.tileList.get(i).getWidth();
-			float tileHeight = this.tileList.get(i).getHeight();
-
-			if (app.keyCode == app.RIGHT) {
-				if (playerX + playerWidth > tileX && tile.getType() == 0) {
-					break;
-				} else {
-					this.player.moveRight();
-					break;
-				}
+		if (app.keyCode == app.UP) {
+			// if we aren't in the top row and the cell above us doesn't contain an obstacle
+			// then we can move up
+			if (player.getPosY() > 115 && tileArray[playerMatY - 1][playerMatX].getType() != 0) {
+				this.player.moveUp();
+				playerMatY--;
 			}
-			
-			
-			if (app.keyCode == app.LEFT) {
-				if (playerX < tileX + tileWidth && tile.getType() == 0) {
-					break;
-				} else {
-					this.player.moveLeft();
-					break;
-				}
+		} else if (app.keyCode == app.DOWN) {
+			// if we aren't in the bottom row and the cell below us doesn't contain an
+			// obstacle
+			// then we can move down
+			if (player.getPosY() < 115 + (490) && tileArray[playerMatY + 1][playerMatX].getType() != 0) {
+				this.player.moveDown();
+				playerMatY++;
 			}
-			
-			
-
-			/*
-			 * if (playerX + playerWidth > tileX && playerX < tileX + tileWidth && playerY +
-			 * playerHeight > tileY && playerY < tileY + tileHeight && tile.getType() == 1)
-			 * { if (app.keyCode == app.DOWN) { this.player.moveDown(); }
-			 * 
-			 * if (app.keyCode == app.UP) { this.player.moveUp(); }
-			 * 
-			 * if (app.keyCode == app.LEFT) { this.player.moveLeft(); }
-			 * 
-			 * if (app.keyCode == app.RIGHT) { this.player.moveRight(); } }
-			 */
-
+		} else if (app.keyCode == app.LEFT) {
+			// if we aren't in the left-most column and the cell to our left doesn't contain
+			// an obstacle
+			// then we can move left
+			if (player.getPosX() > 59 && tileArray[playerMatY][playerMatX- 1].getType() != 0) {
+				this.player.moveLeft();
+				playerMatX--;
+			}
+		} else if (app.keyCode == app.RIGHT) {
+			// if we aren't in the right-most column and the cell to our right doesn't
+			// contain an obstacle
+			// then we can move right
+			if (player.getPosX() < 59 + 1029 && tileArray[playerMatY][playerMatX + 1].getType() != 0) {
+				this.player.moveRight();
+				playerMatX++;
+			}
 		}
-
 	}
 
 }
