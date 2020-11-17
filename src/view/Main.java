@@ -36,9 +36,9 @@ public class Main extends PApplet {
 
 	private ArrayList<Star> starList = new ArrayList<Star>();
 	private PImage starImage;
-	
+
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-	
+
 	private int deathMatX;
 	private int deathMatY;
 
@@ -51,12 +51,11 @@ public class Main extends PApplet {
 	private int unkwonMatX;
 	private int unkwnMatY;
 
-	
 	private PImage deathImage;
 	private PImage apathyImage;
 	private PImage forgetImage;
 	private PImage unkwonImage;
-	
+
 	private PImage gameplayImage;
 
 	private PImage firstImage;
@@ -72,7 +71,7 @@ public class Main extends PApplet {
 	public void setup() {
 		background(155);
 
-		screen = 0;
+		screen = 5;
 		starsCount = 0;
 
 		String[] puertos = Serial.list();
@@ -81,16 +80,16 @@ public class Main extends PApplet {
 		serial.bufferUntil('\n');
 
 		this.playerImage = loadImage("../img/player.png");
-		this.player = new Player(7 + tilezeroX + tileWidth * playerMatX, 3 + tilezeroY + tileWidth * playerMatY, 32, 45, 49,
-				3, 0, this.playerImage, this);
+		this.player = new Player(7 + tilezeroX + tileWidth * playerMatX, 3 + tilezeroY + tileWidth * playerMatY, 32, 45,
+				49, 3, 0, this.playerImage, this);
 
 		this.starImage = loadImage("../img/star.png");
-		
+
 		deathImage = loadImage("../img/muerte.png");
 		apathyImage = loadImage("../img/apatia.png");
 		forgetImage = loadImage("../img/olvido.png");
 		unkwonImage = loadImage("../img/desconocimiento.png");
-		
+
 		deathMatX = 6;
 		deathMatY = 0;
 
@@ -102,9 +101,9 @@ public class Main extends PApplet {
 
 		unkwonMatX = 7;
 		unkwnMatY = 7;
-		
-		this.enemyList.add(new Enemy(tilezeroX + tileWidth * deathMatX, tilezeroY + tileWidth * deathMatY, 49, 49, "death",
-				1, 1, tileWidth, 3, deathImage, this));
+
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * deathMatX, tilezeroY + tileWidth * deathMatY, 49, 49,
+				"death", 1, 1, 7, 3, deathImage, this));
 
 		this.firstImage = loadImage("../img/pantalla01.jpg");
 		this.secondImage = loadImage("../img/pantalla02.jpg");
@@ -242,7 +241,7 @@ public class Main extends PApplet {
 		switch (screen) {
 		case 0:
 			image(this.firstImage, 0, 0, 1200, 700);
-			if(mouseX > 507 && mouseX < 507 + 186 && mouseY > 479 && mouseY < 479 + 52) {
+			if (mouseX > 507 && mouseX < 507 + 186 && mouseY > 479 && mouseY < 479 + 52) {
 				cursor(HAND);
 			} else {
 				cursor(ARROW);
@@ -251,7 +250,7 @@ public class Main extends PApplet {
 
 		case 1:
 			image(this.secondImage, 0, 0, 1200, 700);
-			if(mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				cursor(HAND);
 			} else {
 				cursor(ARROW);
@@ -260,7 +259,7 @@ public class Main extends PApplet {
 
 		case 2:
 			image(this.thirdImage, 0, 0, 1200, 700);
-			if(mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				cursor(HAND);
 			} else {
 				cursor(ARROW);
@@ -269,7 +268,7 @@ public class Main extends PApplet {
 
 		case 3:
 			image(this.fourthImage, 0, 0, 1200, 700);
-			if(mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				cursor(HAND);
 			} else {
 				cursor(ARROW);
@@ -278,7 +277,7 @@ public class Main extends PApplet {
 
 		case 4:
 			image(this.fifthImage, 0, 0, 1200, 700);
-			if(mouseX > 600 && mouseX < 600 + 222 && mouseY > 582 && mouseY < 582 + 52) {
+			if (mouseX > 600 && mouseX < 600 + 222 && mouseY > 582 && mouseY < 582 + 52) {
 				cursor(HAND);
 			} else {
 				cursor(ARROW);
@@ -287,7 +286,7 @@ public class Main extends PApplet {
 
 		case 5:
 			cursor(ARROW);
-			
+
 			for (int i = 0; i < this.rows; i++) {
 				for (int j = 0; j < this.colums; j++) {
 					this.tileArray[i][j].paint();
@@ -313,8 +312,7 @@ public class Main extends PApplet {
 					starList.add(new Star(tile.getPosX() + 9, tile.getPosY() + 9, 30, 30, this.starImage, this));
 				}
 			}
-			
-			
+
 			// Paint star
 			for (int i = 0; i < starList.size(); i++) {
 				starList.get(i).paint();
@@ -339,13 +337,12 @@ public class Main extends PApplet {
 				}
 
 			}
-			
+
 			for (int i = 0; i < this.enemyList.size(); i++) {
 				Enemy enemy = this.enemyList.get(i);
 				enemy.paint();
-			}	
-			
-			
+			}
+
 			// Collision enemies
 			for (int i = 0; i < this.enemyList.size(); i++) {
 				Enemy enemy = this.enemyList.get(i);
@@ -353,7 +350,7 @@ public class Main extends PApplet {
 				float enemyY = enemy.getPosY();
 				float enemyWidth = enemy.getWidth();
 				float enemyHeight = enemy.getHeight();
-				
+
 				if (playerX >= enemyX && playerX < enemyX + enemyWidth && playerY > enemyY
 						&& playerY < enemyY + enemyHeight) {
 					System.out.println("Colision");
@@ -371,31 +368,31 @@ public class Main extends PApplet {
 	public void mousePressed() {
 		switch (screen) {
 		case 0:
-			if(mouseX > 507 && mouseX < 507 + 186 && mouseY > 479 && mouseY < 479 + 52) {
+			if (mouseX > 507 && mouseX < 507 + 186 && mouseY > 479 && mouseY < 479 + 52) {
 				screen = 1;
 			}
 			break;
 
 		case 1:
-			if(mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				screen = 2;
 			}
 			break;
 
 		case 2:
-			if(mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				screen = 3;
 			}
 			break;
 
 		case 3:
-			if(mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				screen = 4;
 			}
 			break;
 
 		case 4:
-			if(mouseX > 600 && mouseX < 600 + 222 && mouseY > 582 && mouseY < 582 + 52) {
+			if (mouseX > 600 && mouseX < 600 + 222 && mouseY > 582 && mouseY < 582 + 52) {
 				screen = 5;
 			}
 			break;
@@ -417,7 +414,7 @@ public class Main extends PApplet {
 			if (keyCode == UP) {
 				// if we aren't in the top row and the cell above us doesn't contain an obstacle
 				// then we can move up
-				if (player.getPosY() > 115 && tileArray[playerMatY - 1][playerMatX].getType() != 0) {
+				if (player.getPosY() > 115 + 3 && tileArray[playerMatY - 1][playerMatX].getType() != 0) {
 					this.player.moveUp();
 					playerMatY--;
 				}

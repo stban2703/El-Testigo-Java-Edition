@@ -16,8 +16,8 @@ public class Enemy {
 	private PImage enemyimage;
 	private PApplet app;
 	
-	public Enemy(float posX, float posY, float width, float height, String type, int directionX, int directionY, float speed, int damage, PImage enemyimage,
-			PApplet app) {
+	public Enemy(float posX, float posY, float width, float height, String type, 
+			int directionX, int directionY, float speed, int damage, PImage enemyimage, PApplet app) {
 		this.posX = posX;
 		this.posY = posY;
 		this.width = width;
@@ -88,7 +88,7 @@ public class Enemy {
 	}
 
 	public void setDirectionX(int directionX) {
-		this.directionX = directionX;
+		this.directionX *= directionX;
 	}
 
 	public int getDirectionY() {
@@ -96,7 +96,7 @@ public class Enemy {
 	}
 
 	public void setDirectionY(int directionY) {
-		this.directionY = directionY;
+		this.directionY *= directionY;
 	}
 
 	public float getSpeed() {
