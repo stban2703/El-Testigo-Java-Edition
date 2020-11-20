@@ -59,10 +59,38 @@ public class Main extends PApplet {
 
 	// Enemies path
 	private Path leftBottom;
-	private Path topLeft;
-	private Path right2;
-	private Path right;
+	private Path leftBottom2;
+	private Path leftBottom3;
 
+	private Path rightBottom;
+	private Path rightBottom2;
+	private Path rightBottom3;
+	private Path rightBottom4;
+	
+	private Path topBottomRight;
+	private Path topBottomRight2;
+	private Path topBottomRight3;
+	
+	private Path bottomLeftRight;
+	private Path bottomLeftRight2;
+	
+	private Path topLeftRight;
+	private Path topLeftRight2;
+	
+	private Path topLeftBottom;
+	private Path topLeftBottom2;
+	private Path topLeftBottom3;
+
+	private Path topLeft;
+	private Path topLeft2;
+	private Path topLeft3;
+	private Path topLeft4;
+	
+	private Path topRight;
+	private Path topRight2;
+	private Path topRight3;
+
+	
 	public void settings() {
 		size(1200, 700);
 	}
@@ -91,8 +119,8 @@ public class Main extends PApplet {
 		unkwonImage = loadImage("../img/desconocimiento.png");
 
 		// Add enemies
-		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, 49, 49, "death", 1, 0, 7, 3, false,
-				deathImage, this));
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, 49, 49, "death", 1, 0, 7, 3,
+				false, deathImage, this));
 
 		this.firstImage = loadImage("../img/pantalla01.jpg");
 		this.secondImage = loadImage("../img/pantalla02.jpg");
@@ -223,19 +251,87 @@ public class Main extends PApplet {
 		this.tileArray[10][16].setType(1);
 		this.tileArray[10][17].setType(1);
 
-		
 		// Set change paths
-		leftBottom = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 0, tileWidth, tileWidth, "left,bottom",
+		// Left Bottom
+		leftBottom = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 0, tileWidth, tileWidth,
+				"left,bottom", this);
+
+		leftBottom2 = new Path(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 2, tileWidth, tileWidth,
+				"left,bottom", this);
+
+		leftBottom3 = new Path(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 7, tileWidth, tileWidth,
+				"left,bottom", this);
+		
+
+		// Top Left Right
+		topLeftRight = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 10, tileWidth, tileWidth,
+				"top,left,right", this);
+		
+		topLeftRight2 = new Path(tilezeroX + tileWidth * 7, tilezeroY + tileWidth * 8, tileWidth, tileWidth,
+				"top,left,right", this);
+		
+
+		// Right Bottom
+		rightBottom = new Path(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, tileWidth, tileWidth,
+				"right,bottom", this);
+
+		rightBottom2 = new Path(tilezeroX + tileWidth * 3, tilezeroY + tileWidth * 1, tileWidth, tileWidth,
+				"right,bottom", this);
+
+		rightBottom3 = new Path(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 4, tileWidth, tileWidth,
+				"right,bottom", this);
+		
+		rightBottom4 = new Path(tilezeroX + tileWidth * 7, tilezeroY + tileWidth * 5, tileWidth, tileWidth,
+				"right,bottom", this);
+		
+		
+		// Top Bottom Right
+		topBottomRight = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 2, tileWidth, tileWidth,
+				"top,bottom,right", this);
+		
+		topBottomRight2 = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 7, tileWidth, tileWidth,
+				"top,bottom,right", this);
+		
+		topBottomRight3 = new Path(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 8, tileWidth, tileWidth,
+				"top,bottom,right", this);
+		
+		
+		// Bottom Left Right
+		bottomLeftRight = new Path(tilezeroX + tileWidth * 4, tilezeroY + tileWidth * 8, tileWidth, tileWidth,
+				"bottom,left,right", this);
+		
+		bottomLeftRight2 = new Path(tilezeroX + tileWidth * 18, tilezeroY + tileWidth * 2, tileWidth, tileWidth,
+				"bottom,left,right", this);
+				
+		
+		// Top Left Bottom
+		topLeftBottom = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 5, tileWidth, tileWidth,
+				"top,left,bottom", this);
+		
+		topLeftBottom2 = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 8, tileWidth, tileWidth,
+				"top,left,bottom", this);
+		
+		topLeftBottom3 = new Path(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 5, tileWidth, tileWidth,
+				"top,left,bottom", this);
+		
+
+		// Top Left
+		topLeft = new Path(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 1, tileWidth, tileWidth, "top,left",
+				this);
+
+		topLeft2 = new Path(tilezeroX + tileWidth * 3, tilezeroY + tileWidth * 4, tileWidth, tileWidth, "top,left",
 				this);
 		
-		topLeft = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "top,left",
+		topLeft3 = new Path(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "top,left",
+				this);
+
+		topLeft4 = new Path(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 8, tileWidth, tileWidth, "top,left",
 				this);
 		
-		right2 = new Path(tilezeroX + tileWidth * 4, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "right",
-				this);
 		
-		right = new Path(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, tileWidth, tileWidth, "right",
-				this);
+		topRight = new Path(tilezeroX + tileWidth * 4, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "top,right", this);
+		topRight2 = new Path(tilezeroX + tileWidth * 18, tilezeroY + tileWidth * 5, tileWidth, tileWidth, "top,right", this);
+		topRight3 = new Path(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 8, tileWidth, tileWidth, "top,right", this);
 
 	}
 
@@ -349,38 +445,163 @@ public class Main extends PApplet {
 				enemy.moveX();
 				enemy.moveY();
 			}
-			
-			
+
 			// Change enemies direction
 			for (int i = 0; i < this.enemyList.size(); i++) {
 				Enemy enemy = this.enemyList.get(i);
-				
-				if(enemy.getPosX() == leftBottom.getPosX() && enemy.getPosY() == leftBottom.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == leftBottom.getPosX() && enemy.getPosY() == leftBottom.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = leftBottom.randomDirection();
 					enemy.changeDirection(newDirection);
-					//enemy.setChanged(true);
+				}
+
+				if (enemy.getPosX() == leftBottom2.getPosX() && enemy.getPosY() == leftBottom2.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = leftBottom2.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+
+				if (enemy.getPosX() == leftBottom3.getPosX() && enemy.getPosY() == leftBottom3.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = leftBottom3.randomDirection();
+					enemy.changeDirection(newDirection);
 				}
 				
-				if(enemy.getPosX() == topLeft.getPosX() && enemy.getPosY() == topLeft.getPosY() && !enemy.isChanged()) {
+				
+
+				if (enemy.getPosX() == topLeftRight.getPosX() && enemy.getPosY() == topLeftRight.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = topLeftRight.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == topLeftRight2.getPosX() && enemy.getPosY() == topLeftRight2.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = topLeftRight2.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				
+
+				if (enemy.getPosX() == rightBottom.getPosX() && enemy.getPosY() == rightBottom.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = rightBottom.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+
+				if (enemy.getPosX() == rightBottom2.getPosX() && enemy.getPosY() == rightBottom2.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = rightBottom2.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+
+				if (enemy.getPosX() == rightBottom3.getPosX() && enemy.getPosY() == rightBottom3.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = rightBottom3.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+
+				if (enemy.getPosX() == rightBottom4.getPosX() && enemy.getPosY() == rightBottom4.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = rightBottom4.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				
+
+				if (enemy.getPosX() == topBottomRight.getPosX() && enemy.getPosY() == topBottomRight.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = topBottomRight.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				
+				
+				if (enemy.getPosX() == topLeft.getPosX() && enemy.getPosY() == topLeft.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topLeft.randomDirection();
 					enemy.changeDirection(newDirection);
-					//enemy.setChanged(true);
 				}
 				
-				if(enemy.getPosX() == right2.getPosX() && enemy.getPosY() == right2.getPosY() && !enemy.isChanged()) {
-					String newDirection = right2.randomDirection();
+				if (enemy.getPosX() == topLeft2.getPosX() && enemy.getPosY() == topLeft2.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = topLeft2.randomDirection();
 					enemy.changeDirection(newDirection);
-					//enemy.setChanged(true);
 				}
 				
-				if(enemy.getPosX() == right.getPosX() && enemy.getPosY() == right.getPosY() && !enemy.isChanged()) {
-					String newDirection = right.randomDirection();
+				if (enemy.getPosX() == topLeft3.getPosX() && enemy.getPosY() == topLeft3.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = topLeft3.randomDirection();
 					enemy.changeDirection(newDirection);
-					//enemy.setChanged(true);
+				}
+				
+				if (enemy.getPosX() == topLeft4.getPosX() && enemy.getPosY() == topLeft4.getPosY()
+						&& !enemy.isChanged()) {
+					String newDirection = topLeft4.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				
+
+				if (enemy.getPosX() == topRight.getPosX() && enemy.getPosY() == topRight.getPosY() && !enemy.isChanged()) {
+					String newDirection = topRight.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == topRight2.getPosX() && enemy.getPosY() == topRight2.getPosY() && !enemy.isChanged()) {
+					String newDirection = topRight2.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == topRight3.getPosX() && enemy.getPosY() == topRight3.getPosY() && !enemy.isChanged()) {
+					String newDirection = topRight3.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				
+				if (enemy.getPosX() == topBottomRight.getPosX() && enemy.getPosY() == topBottomRight.getPosY() && !enemy.isChanged()) {
+					String newDirection = topBottomRight.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == topBottomRight2.getPosX() && enemy.getPosY() == topBottomRight2.getPosY() && !enemy.isChanged()) {
+					String newDirection = topBottomRight2.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == topBottomRight3.getPosX() && enemy.getPosY() == topBottomRight3.getPosY() && !enemy.isChanged()) {
+					String newDirection = topBottomRight3.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+			
+				
+				if (enemy.getPosX() == bottomLeftRight.getPosX() && enemy.getPosY() == bottomLeftRight.getPosY() && !enemy.isChanged()) {
+					String newDirection = topBottomRight.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == bottomLeftRight2.getPosX() && enemy.getPosY() == bottomLeftRight2.getPosY() && !enemy.isChanged()) {
+					String newDirection = bottomLeftRight2.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == topLeftBottom.getPosX() && enemy.getPosY() == topLeftBottom.getPosY() && !enemy.isChanged()) {
+					String newDirection = topLeftBottom.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == topLeftBottom2.getPosX() && enemy.getPosY() == topLeftBottom2.getPosY() && !enemy.isChanged()) {
+					String newDirection = topLeftBottom2.randomDirection();
+					enemy.changeDirection(newDirection);
+				}
+				
+				if (enemy.getPosX() == topLeftBottom3.getPosX() && enemy.getPosY() == topLeftBottom3.getPosY() && !enemy.isChanged()) {
+					String newDirection = topLeftBottom3.randomDirection();
+					enemy.changeDirection(newDirection);
 				}
 			}
-			
-			
+
 			// Collision enemies
 			for (int i = 0; i < this.enemyList.size(); i++) {
 				Enemy enemy = this.enemyList.get(i);
@@ -395,13 +616,39 @@ public class Main extends PApplet {
 				}
 
 			}
+
+			/*leftBottom.paint();
+			leftBottom2.paint();
+			leftBottom3.paint();
+
+			topLeftRight.paint();
+			topLeftRight2.paint();
+
+			rightBottom.paint();
+			rightBottom2.paint();
+			rightBottom3.paint();
+			rightBottom4.paint();
 			
-			leftBottom.paint();
+			topBottomRight.paint();
+			topBottomRight2.paint();
+			topBottomRight3.paint();
+			
+			bottomLeftRight.paint();
+			bottomLeftRight2.paint();
+			
+			topLeftBottom.paint();
+			topLeftBottom2.paint();
+			topLeftBottom3.paint();
+
 			topLeft.paint();
-			right2.paint();
-			right.paint();
+			topLeft2.paint();
+			topLeft3.paint();
+			topLeft4.paint();
 			
-			
+			topRight.paint();
+			topRight2.paint();
+			topRight3.paint();*/
+
 			break;
 
 		default:
