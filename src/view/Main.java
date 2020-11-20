@@ -5,6 +5,7 @@ import view.Main;
 import java.util.ArrayList;
 
 import model.Enemy;
+import model.Path;
 import model.Player;
 import model.Star;
 import model.Tile;
@@ -22,6 +23,8 @@ public class Main extends PApplet {
 
 	private int screen;
 	private int starsCount = 0;
+
+	// Grid
 	private int rows = 11;
 	private int colums = 22;
 	private Tile tileArray[][] = new Tile[rows][colums];
@@ -29,40 +32,36 @@ public class Main extends PApplet {
 	private float tilezeroY = 115;
 	private float tileWidth = 49;
 
+	// Player
 	private Player player;
 	private PImage playerImage;
 	private int playerMatX = 7;
 	private int playerMatY = 7;
 
+	// Stars
 	private ArrayList<Star> starList = new ArrayList<Star>();
 	private PImage starImage;
 
+	// Enemies
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-
-	private int deathMatX;
-	private int deathMatY;
-
-	private int apathyMatX;
-	private int apathyMatY;
-
-	private int forgetMatX;
-	private int forgetMatY;
-
-	private int unkwonMatX;
-	private int unkwnMatY;
-
 	private PImage deathImage;
 	private PImage apathyImage;
 	private PImage forgetImage;
 	private PImage unkwonImage;
 
+	// Screens
 	private PImage gameplayImage;
-
 	private PImage firstImage;
 	private PImage secondImage;
 	private PImage thirdImage;
 	private PImage fourthImage;
 	private PImage fifthImage;
+
+	// Enemies path
+	private Path leftBottom;
+	private Path topLeft;
+	private Path right2;
+	private Path right;
 
 	public void settings() {
 		size(1200, 700);
@@ -74,6 +73,7 @@ public class Main extends PApplet {
 		screen = 5;
 		starsCount = 0;
 
+		// Arduino
 		String[] puertos = Serial.list();
 		printArray(puertos);
 		serial = new Serial(this, puertos[0], 9600);
@@ -90,20 +90,9 @@ public class Main extends PApplet {
 		forgetImage = loadImage("../img/olvido.png");
 		unkwonImage = loadImage("../img/desconocimiento.png");
 
-		deathMatX = 6;
-		deathMatY = 0;
-
-		apathyMatX = 7;
-		apathyMatY = 7;
-
-		forgetMatX = 7;
-		forgetMatY = 7;
-
-		unkwonMatX = 7;
-		unkwnMatY = 7;
-
-		this.enemyList.add(new Enemy(tilezeroX + tileWidth * deathMatX, tilezeroY + tileWidth * deathMatY, 49, 49,
-				"death", 1, 1, 7, 3, deathImage, this));
+		// Add enemies
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, 49, 49, "death", 1, 0, 7, 3, false,
+				deathImage, this));
 
 		this.firstImage = loadImage("../img/pantalla01.jpg");
 		this.secondImage = loadImage("../img/pantalla02.jpg");
@@ -234,6 +223,20 @@ public class Main extends PApplet {
 		this.tileArray[10][16].setType(1);
 		this.tileArray[10][17].setType(1);
 
+		
+		// Set change paths
+		leftBottom = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 0, tileWidth, tileWidth, "left,bottom",
+				this);
+		
+		topLeft = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "top,left",
+				this);
+		
+		right2 = new Path(tilezeroX + tileWidth * 4, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "right",
+				this);
+		
+		right = new Path(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, tileWidth, tileWidth, "right",
+				this);
+
 	}
 
 	public void draw() {
@@ -298,6 +301,7 @@ public class Main extends PApplet {
 			textSize(20);
 			text(starsCount, 895, 45);
 
+			// Paint player
 			this.player.paint();
 
 			// Generate star
@@ -338,11 +342,45 @@ public class Main extends PApplet {
 
 			}
 
+			// Paint enemies
 			for (int i = 0; i < this.enemyList.size(); i++) {
 				Enemy enemy = this.enemyList.get(i);
 				enemy.paint();
+				enemy.moveX();
+				enemy.moveY();
 			}
-
+			
+			
+			// Change enemies direction
+			for (int i = 0; i < this.enemyList.size(); i++) {
+				Enemy enemy = this.enemyList.get(i);
+				
+				if(enemy.getPosX() == leftBottom.getPosX() && enemy.getPosY() == leftBottom.getPosY() && !enemy.isChanged()) {
+					String newDirection = leftBottom.randomDirection();
+					enemy.changeDirection(newDirection);
+					//enemy.setChanged(true);
+				}
+				
+				if(enemy.getPosX() == topLeft.getPosX() && enemy.getPosY() == topLeft.getPosY() && !enemy.isChanged()) {
+					String newDirection = topLeft.randomDirection();
+					enemy.changeDirection(newDirection);
+					//enemy.setChanged(true);
+				}
+				
+				if(enemy.getPosX() == right2.getPosX() && enemy.getPosY() == right2.getPosY() && !enemy.isChanged()) {
+					String newDirection = right2.randomDirection();
+					enemy.changeDirection(newDirection);
+					//enemy.setChanged(true);
+				}
+				
+				if(enemy.getPosX() == right.getPosX() && enemy.getPosY() == right.getPosY() && !enemy.isChanged()) {
+					String newDirection = right.randomDirection();
+					enemy.changeDirection(newDirection);
+					//enemy.setChanged(true);
+				}
+			}
+			
+			
 			// Collision enemies
 			for (int i = 0; i < this.enemyList.size(); i++) {
 				Enemy enemy = this.enemyList.get(i);
@@ -357,6 +395,13 @@ public class Main extends PApplet {
 				}
 
 			}
+			
+			leftBottom.paint();
+			topLeft.paint();
+			right2.paint();
+			right.paint();
+			
+			
 			break;
 
 		default:
@@ -366,6 +411,8 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
+
+		System.out.println("MouseX: " + mouseX + "\n" + "MouseY: " + mouseY);
 		switch (screen) {
 		case 0:
 			if (mouseX > 507 && mouseX < 507 + 186 && mouseY > 479 && mouseY < 479 + 52) {

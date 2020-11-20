@@ -2,6 +2,7 @@ package model;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.core.PVector;
 
 public class Enemy {
 	private float posX;
@@ -13,11 +14,12 @@ public class Enemy {
 	private int directionX;
 	private int directionY;
 	private float speed;
+	private boolean isChanged;
 	private PImage enemyimage;
 	private PApplet app;
-	
-	public Enemy(float posX, float posY, float width, float height, String type, 
-			int directionX, int directionY, float speed, int damage, PImage enemyimage, PApplet app) {
+
+	public Enemy(float posX, float posY, float width, float height, String type, int directionX, int directionY,
+			float speed, int damage, boolean isChanged, PImage enemyimage, PApplet app) {
 		this.posX = posX;
 		this.posY = posY;
 		this.width = width;
@@ -27,18 +29,43 @@ public class Enemy {
 		this.directionX = directionX;
 		this.directionY = directionY;
 		this.speed = speed;
+		this.isChanged = isChanged;
 		this.enemyimage = enemyimage;
 		this.app = app;
 	}
-	
+
 	public void paint() {
 		app.image(this.enemyimage, this.posX, this.posY, this.width, this.height);
 	}
-	
+
+	public void changeDirection(String type) {
+		switch (type) {
+		case "top":
+			this.directionX = 0;
+			this.directionY = -1;
+			break;
+
+		case "bottom":
+			this.directionX = 0;
+			this.directionY = 1;
+			break;
+
+		case "left":
+			this.directionX = -1;
+			this.directionY = 0;
+			break;
+
+		case "right":
+			this.directionX = 1;
+			this.directionY = 0;
+			break;
+		}
+	}
+
 	public void moveX() {
 		this.posX += speed * directionX;
 	}
-	
+
 	public void moveY() {
 		this.posY += speed * directionY;
 	}
@@ -88,7 +115,7 @@ public class Enemy {
 	}
 
 	public void setDirectionX(int directionX) {
-		this.directionX *= directionX;
+		this.directionX = directionX;
 	}
 
 	public int getDirectionY() {
@@ -96,7 +123,7 @@ public class Enemy {
 	}
 
 	public void setDirectionY(int directionY) {
-		this.directionY *= directionY;
+		this.directionY = directionY;
 	}
 
 	public float getSpeed() {
@@ -115,6 +142,14 @@ public class Enemy {
 		this.damage = damage;
 	}
 
+	public boolean isChanged() {
+		return isChanged;
+	}
+
+	public void setChanged(boolean isChanged) {
+		this.isChanged = isChanged;
+	}
+
 	public PImage getEnemyimage() {
 		return enemyimage;
 	}
@@ -122,5 +157,5 @@ public class Enemy {
 	public void setEnemyimage(PImage enemyimage) {
 		this.enemyimage = enemyimage;
 	}
-	
+
 }
