@@ -3,27 +3,27 @@ package model;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class Star {
+public class Grave {
 	private float posX;
 	private float posY;
 	private int tile;
 	private float width;
 	private float height;
+	private PImage graveImage;
 	private PApplet app;
-	private PImage starImage;
 	
-	public Star(float posX, float posY, int tile, float width, float height,  PImage starImage, PApplet app) {
+	public Grave(float posX, float posY, int tile, float width, float height, PImage graveImage, PApplet app) {
 		this.posX = posX;
 		this.posY = posY;
 		this.tile = tile;
 		this.width = width;
 		this.height = height;
-		this.starImage = starImage;
+		this.graveImage = graveImage;
 		this.app = app;
 	}
 	
 	public void paint() {
-		this.app.image(this.starImage, this.posX, this.posY, this.width, this.height);
+		this.app.image(this.graveImage, this.posX, this.posY, this.width, this.height);
 	}
 
 	public float getPosX() {
@@ -66,12 +66,12 @@ public class Star {
 		this.height = height;
 	}
 
-	public PImage getStarImage() {
-		return starImage;
+	public PImage getGraveImage() {
+		return graveImage;
 	}
 
-	public void setStarImage(PImage playerImage) {
-		this.starImage = playerImage;
+	public void setGraveImage(PImage graveImage) {
+		this.graveImage = graveImage;
 	}
 	
 }

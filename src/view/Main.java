@@ -5,6 +5,7 @@ import view.Main;
 import java.util.ArrayList;
 
 import model.Enemy;
+import model.Grave;
 import model.Path;
 import model.Player;
 import model.Star;
@@ -32,6 +33,9 @@ public class Main extends PApplet {
 	private float tilezeroY = 115;
 	private float tileWidth = 49;
 
+	// Spawn tiles
+	private ArrayList<Tile> spawnTiles = new ArrayList<Tile>();
+
 	// Player
 	private Player player;
 	private PImage playerImage;
@@ -41,6 +45,10 @@ public class Main extends PApplet {
 	// Stars
 	private ArrayList<Star> starList = new ArrayList<Star>();
 	private PImage starImage;
+
+	// Graves
+	private ArrayList<Grave> graveList = new ArrayList<Grave>();
+	private PImage graveImage;
 
 	// Enemies
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
@@ -66,17 +74,17 @@ public class Main extends PApplet {
 	private Path rightBottom2;
 	private Path rightBottom3;
 	private Path rightBottom4;
-	
+
 	private Path topBottomRight;
 	private Path topBottomRight2;
 	private Path topBottomRight3;
-	
+
 	private Path bottomLeftRight;
 	private Path bottomLeftRight2;
-	
+
 	private Path topLeftRight;
 	private Path topLeftRight2;
-	
+
 	private Path topLeftBottom;
 	private Path topLeftBottom2;
 	private Path topLeftBottom3;
@@ -85,12 +93,11 @@ public class Main extends PApplet {
 	private Path topLeft2;
 	private Path topLeft3;
 	private Path topLeft4;
-	
+
 	private Path topRight;
 	private Path topRight2;
 	private Path topRight3;
 
-	
 	public void settings() {
 		size(1200, 700);
 	}
@@ -112,6 +119,7 @@ public class Main extends PApplet {
 				49, 3, 0, this.playerImage, this);
 
 		this.starImage = loadImage("../img/star.png");
+		this.graveImage = loadImage("../img/tumba.png");
 
 		// Add enemies
 		deathImage = loadImage("../img/muerte.png");
@@ -119,20 +127,17 @@ public class Main extends PApplet {
 		forgetImage = loadImage("../img/olvido.png");
 		unkwonImage = loadImage("../img/desconocimiento.png");
 
-		
 		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, 49, 49, "death", 1, 0, 7, 3,
 				false, deathImage, this));
-		
+
 		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 4, 49, 49, "apathy", 0, 1, 7, 3,
 				false, apathyImage, this));
-		
-		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 2, 49, 49, "forget", -1, 0, 7, 3,
-				false, forgetImage, this));
-		
-		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 10, 49, 49, "unkwon", -1, 0, 7, 3,
-				false, unkwonImage, this));
-		
-		
+
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 2, 49, 49, "forget", -1, 0, 7,
+				3, false, forgetImage, this));
+
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 10, 49, 49, "unkwon", -1, 0, 7,
+				3, false, unkwonImage, this));
 
 		this.firstImage = loadImage("../img/pantalla01.jpg");
 		this.secondImage = loadImage("../img/pantalla02.jpg");
@@ -144,7 +149,9 @@ public class Main extends PApplet {
 		for (int i = 0; i < this.rows; i++) {
 			for (int j = 0; j < this.colums; j++) {
 				this.tileArray[i][j] = new Tile(this.tilezeroX + (this.tileWidth * j),
-						this.tilezeroY + (this.tileWidth * i), this.tileWidth, this.tileWidth, 0, this);
+						this.tilezeroY + (this.tileWidth * i), this.tileWidth, this.tileWidth, 0, false, this);
+				this.tileArray[i][j].setMatX(i);
+				this.tileArray[i][j].setMatY(j);
 			}
 		}
 
@@ -263,6 +270,15 @@ public class Main extends PApplet {
 		this.tileArray[10][16].setType(1);
 		this.tileArray[10][17].setType(1);
 
+		// Save spawn tiles
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.colums; j++) {
+				if (tileArray[i][j].getType() == 1) {
+					spawnTiles.add(tileArray[i][j]);
+				}
+			}
+		}
+
 		// Set change paths
 		// Left Bottom
 		leftBottom = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 0, tileWidth, tileWidth,
@@ -273,15 +289,13 @@ public class Main extends PApplet {
 
 		leftBottom3 = new Path(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 7, tileWidth, tileWidth,
 				"left,bottom", this);
-		
 
 		// Top Left Right
 		topLeftRight = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 10, tileWidth, tileWidth,
 				"top,left,right", this);
-		
+
 		topLeftRight2 = new Path(tilezeroX + tileWidth * 7, tilezeroY + tileWidth * 8, tileWidth, tileWidth,
 				"top,left,right", this);
-		
 
 		// Right Bottom
 		rightBottom = new Path(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, tileWidth, tileWidth,
@@ -292,40 +306,36 @@ public class Main extends PApplet {
 
 		rightBottom3 = new Path(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 4, tileWidth, tileWidth,
 				"right,bottom", this);
-		
+
 		rightBottom4 = new Path(tilezeroX + tileWidth * 7, tilezeroY + tileWidth * 5, tileWidth, tileWidth,
 				"right,bottom", this);
-		
-		
+
 		// Top Bottom Right
 		topBottomRight = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 2, tileWidth, tileWidth,
 				"top,bottom,right", this);
-		
+
 		topBottomRight2 = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 7, tileWidth, tileWidth,
 				"top,bottom,right", this);
-		
+
 		topBottomRight3 = new Path(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 8, tileWidth, tileWidth,
 				"top,bottom,right", this);
-		
-		
+
 		// Bottom Left Right
 		bottomLeftRight = new Path(tilezeroX + tileWidth * 4, tilezeroY + tileWidth * 8, tileWidth, tileWidth,
 				"bottom,left,right", this);
-		
+
 		bottomLeftRight2 = new Path(tilezeroX + tileWidth * 18, tilezeroY + tileWidth * 2, tileWidth, tileWidth,
 				"bottom,left,right", this);
-				
-		
+
 		// Top Left Bottom
 		topLeftBottom = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 5, tileWidth, tileWidth,
 				"top,left,bottom", this);
-		
+
 		topLeftBottom2 = new Path(tilezeroX + tileWidth * 12, tilezeroY + tileWidth * 8, tileWidth, tileWidth,
 				"top,left,bottom", this);
-		
+
 		topLeftBottom3 = new Path(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 5, tileWidth, tileWidth,
 				"top,left,bottom", this);
-		
 
 		// Top Left
 		topLeft = new Path(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 1, tileWidth, tileWidth, "top,left",
@@ -333,17 +343,19 @@ public class Main extends PApplet {
 
 		topLeft2 = new Path(tilezeroX + tileWidth * 3, tilezeroY + tileWidth * 4, tileWidth, tileWidth, "top,left",
 				this);
-		
+
 		topLeft3 = new Path(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "top,left",
 				this);
 
 		topLeft4 = new Path(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 8, tileWidth, tileWidth, "top,left",
 				this);
-		
-		
-		topRight = new Path(tilezeroX + tileWidth * 4, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "top,right", this);
-		topRight2 = new Path(tilezeroX + tileWidth * 18, tilezeroY + tileWidth * 5, tileWidth, tileWidth, "top,right", this);
-		topRight3 = new Path(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 8, tileWidth, tileWidth, "top,right", this);
+
+		topRight = new Path(tilezeroX + tileWidth * 4, tilezeroY + tileWidth * 10, tileWidth, tileWidth, "top,right",
+				this);
+		topRight2 = new Path(tilezeroX + tileWidth * 18, tilezeroY + tileWidth * 5, tileWidth, tileWidth, "top,right",
+				this);
+		topRight3 = new Path(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 8, tileWidth, tileWidth, "top,right",
+				this);
 
 	}
 
@@ -413,21 +425,45 @@ public class Main extends PApplet {
 			this.player.paint();
 
 			// Generate star
-			if (frameCount % 40 == 0) {
+			if (frameCount % 60 == 0) {
 
-				int randomRow = (int) Math.floor(random(11));
-				int randomColum = (int) Math.floor(random(22));
+				// int randomRow = (int) Math.floor(random(11));
+				// int randomColum = (int) Math.floor(random(22));
+				int random = (int) Math.floor(random(spawnTiles.size()));
 
-				Tile tile = tileArray[randomRow][randomColum];
-
-				if (tile.getType() == 1) {
-					starList.add(new Star(tile.getPosX() + 9, tile.getPosY() + 9, 30, 30, this.starImage, this));
+				Tile randomTile = spawnTiles.get(random);
+				// if (tile.getType() == 1) {
+				if (!randomTile.isOccupied()) {
+					starList.add(new Star(randomTile.getPosX() + 9, randomTile.getPosY() + 9, random, 30, 30,
+							this.starImage, this));
+					randomTile.setOccupied(true);
 				}
+				// }
+			}
+
+			// Generate graves
+			if (frameCount % 70 == 0) {
+
+				int random = (int) Math.floor(random(spawnTiles.size()));
+
+				Tile randomTile = spawnTiles.get(random);
+				// if (tile.getType() == 1) {
+				if (!randomTile.isOccupied()) {
+					graveList.add(new Grave(randomTile.getPosX() + 9, randomTile.getPosY() + 9, random, 30, 30,
+							this.graveImage, this));
+					randomTile.setOccupied(true);
+				}
+				// }
 			}
 
 			// Paint star
 			for (int i = 0; i < starList.size(); i++) {
 				starList.get(i).paint();
+			}
+
+			// Paint graves
+			for (int i = 0; i < graveList.size(); i++) {
+				graveList.get(i).paint();
 			}
 
 			float playerX = this.player.getPosX();
@@ -443,9 +479,28 @@ public class Main extends PApplet {
 
 				if (starX > playerX && starX < playerX + playerWidth && starY > playerY
 						&& starY < playerY + playerHeight) {
+
+					spawnTiles.get(i).setOccupied(false);
 					starList.remove(i);
 					serial.write("ledon\n");
 					starsCount++;
+
+				}
+
+			}
+
+			// Get graves
+			for (int i = 0; i < this.graveList.size(); i++) {
+				Grave grave = this.graveList.get(i);
+				float graveX = grave.getPosX();
+				float graveY = grave.getPosY();
+
+				if (graveX > playerX && graveX < playerX + playerWidth && graveY > playerY
+						&& graveY < playerY + playerHeight) {
+
+					spawnTiles.get(i).setOccupied(false);
+					graveList.remove(i);
+					serial.write("ledoff\n");
 				}
 
 			}
@@ -479,22 +534,18 @@ public class Main extends PApplet {
 					String newDirection = leftBottom3.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				
 
 				if (enemy.getPosX() == topLeftRight.getPosX() && enemy.getPosY() == topLeftRight.getPosY()
 						&& !enemy.isChanged()) {
 					String newDirection = topLeftRight.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
+
 				if (enemy.getPosX() == topLeftRight2.getPosX() && enemy.getPosY() == topLeftRight2.getPosY()
 						&& !enemy.isChanged()) {
 					String newDirection = topLeftRight2.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				
 
 				if (enemy.getPosX() == rightBottom.getPosX() && enemy.getPosY() == rightBottom.getPosY()
 						&& !enemy.isChanged()) {
@@ -519,96 +570,99 @@ public class Main extends PApplet {
 					String newDirection = rightBottom4.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				
 
 				if (enemy.getPosX() == topBottomRight.getPosX() && enemy.getPosY() == topBottomRight.getPosY()
 						&& !enemy.isChanged()) {
 					String newDirection = topBottomRight.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				
-				
+
 				if (enemy.getPosX() == topLeft.getPosX() && enemy.getPosY() == topLeft.getPosY()
 						&& !enemy.isChanged()) {
 					String newDirection = topLeft.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
+
 				if (enemy.getPosX() == topLeft2.getPosX() && enemy.getPosY() == topLeft2.getPosY()
 						&& !enemy.isChanged()) {
 					String newDirection = topLeft2.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
+
 				if (enemy.getPosX() == topLeft3.getPosX() && enemy.getPosY() == topLeft3.getPosY()
 						&& !enemy.isChanged()) {
 					String newDirection = topLeft3.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
+
 				if (enemy.getPosX() == topLeft4.getPosX() && enemy.getPosY() == topLeft4.getPosY()
 						&& !enemy.isChanged()) {
 					String newDirection = topLeft4.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				
 
-				if (enemy.getPosX() == topRight.getPosX() && enemy.getPosY() == topRight.getPosY() && !enemy.isChanged()) {
+				if (enemy.getPosX() == topRight.getPosX() && enemy.getPosY() == topRight.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topRight.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				if (enemy.getPosX() == topRight2.getPosX() && enemy.getPosY() == topRight2.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == topRight2.getPosX() && enemy.getPosY() == topRight2.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topRight2.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				if (enemy.getPosX() == topRight3.getPosX() && enemy.getPosY() == topRight3.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == topRight3.getPosX() && enemy.getPosY() == topRight3.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topRight3.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				
-				if (enemy.getPosX() == topBottomRight.getPosX() && enemy.getPosY() == topBottomRight.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == topBottomRight.getPosX() && enemy.getPosY() == topBottomRight.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topBottomRight.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				if (enemy.getPosX() == topBottomRight2.getPosX() && enemy.getPosY() == topBottomRight2.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == topBottomRight2.getPosX() && enemy.getPosY() == topBottomRight2.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topBottomRight2.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				if (enemy.getPosX() == topBottomRight3.getPosX() && enemy.getPosY() == topBottomRight3.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == topBottomRight3.getPosX() && enemy.getPosY() == topBottomRight3.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topBottomRight3.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-			
-				
-				if (enemy.getPosX() == bottomLeftRight.getPosX() && enemy.getPosY() == bottomLeftRight.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == bottomLeftRight.getPosX() && enemy.getPosY() == bottomLeftRight.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = bottomLeftRight.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				if (enemy.getPosX() == bottomLeftRight2.getPosX() && enemy.getPosY() == bottomLeftRight2.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == bottomLeftRight2.getPosX() && enemy.getPosY() == bottomLeftRight2.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = bottomLeftRight2.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				if (enemy.getPosX() == topLeftBottom.getPosX() && enemy.getPosY() == topLeftBottom.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == topLeftBottom.getPosX() && enemy.getPosY() == topLeftBottom.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topLeftBottom.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				if (enemy.getPosX() == topLeftBottom2.getPosX() && enemy.getPosY() == topLeftBottom2.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == topLeftBottom2.getPosX() && enemy.getPosY() == topLeftBottom2.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topLeftBottom2.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
-				
-				if (enemy.getPosX() == topLeftBottom3.getPosX() && enemy.getPosY() == topLeftBottom3.getPosY() && !enemy.isChanged()) {
+
+				if (enemy.getPosX() == topLeftBottom3.getPosX() && enemy.getPosY() == topLeftBottom3.getPosY()
+						&& !enemy.isChanged()) {
 					String newDirection = topLeftBottom3.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
@@ -629,37 +683,24 @@ public class Main extends PApplet {
 
 			}
 
-			/*leftBottom.paint();
-			leftBottom2.paint();
-			leftBottom3.paint();
-
-			topLeftRight.paint();
-			topLeftRight2.paint();
-
-			rightBottom.paint();
-			rightBottom2.paint();
-			rightBottom3.paint();
-			rightBottom4.paint();
-			
-			topBottomRight.paint();
-			topBottomRight2.paint();
-			topBottomRight3.paint();
-			
-			bottomLeftRight.paint();
-			bottomLeftRight2.paint();
-			
-			topLeftBottom.paint();
-			topLeftBottom2.paint();
-			topLeftBottom3.paint();
-
-			topLeft.paint();
-			topLeft2.paint();
-			topLeft3.paint();
-			topLeft4.paint();
-			
-			topRight.paint();
-			topRight2.paint();
-			topRight3.paint();*/
+			/*
+			 * leftBottom.paint(); leftBottom2.paint(); leftBottom3.paint();
+			 * 
+			 * topLeftRight.paint(); topLeftRight2.paint();
+			 * 
+			 * rightBottom.paint(); rightBottom2.paint(); rightBottom3.paint();
+			 * rightBottom4.paint();
+			 * 
+			 * topBottomRight.paint(); topBottomRight2.paint(); topBottomRight3.paint();
+			 * 
+			 * bottomLeftRight.paint(); bottomLeftRight2.paint();
+			 * 
+			 * topLeftBottom.paint(); topLeftBottom2.paint(); topLeftBottom3.paint();
+			 * 
+			 * topLeft.paint(); topLeft2.paint(); topLeft3.paint(); topLeft4.paint();
+			 * 
+			 * topRight.paint(); topRight2.paint(); topRight3.paint();
+			 */
 
 			break;
 

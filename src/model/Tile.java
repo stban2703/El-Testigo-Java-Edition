@@ -8,15 +8,20 @@ public class Tile {
 	private float posY;
 	private float width;
 	private float height;
+	private int matX;
+	private int matY;
 	private int type;
+	private boolean occupied;
 	private PApplet app;
 
-	public Tile(float posX, float posY, float width, float height, int type, PApplet app) {
+	public Tile(float posX, float posY, float width, float height, int type, boolean occupied, PApplet app) {
 		this.posX = posX;
 		this.posY = posY;
 		this.width = width;
 		this.height = height;
 		this.type = type;
+		this.matX = 0;
+		this.matY = 0;
 		this.app = app;
 	}
 
@@ -46,6 +51,22 @@ public class Tile {
 		this.posY = posY;
 	}
 
+	public int getMatX() {
+		return matX;
+	}
+
+	public void setMatX(int matX) {
+		this.matX = matX;
+	}
+
+	public int getMatY() {
+		return matY;
+	}
+
+	public void setMatY(int matY) {
+		this.matY = matY;
+	}
+
 	public float getWidth() {
 		return width;
 	}
@@ -68,6 +89,14 @@ public class Tile {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public boolean isOccupied() {
+		return occupied;
+	}
+
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
 	}
 
 }
