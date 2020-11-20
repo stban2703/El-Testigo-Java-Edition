@@ -2,7 +2,6 @@ package model;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.core.PVector;
 
 public class Enemy {
 	private float posX;
@@ -35,7 +34,26 @@ public class Enemy {
 	}
 
 	public void paint() {
-		app.image(this.enemyimage, this.posX, this.posY, this.width, this.height);
+		//app.rect(this.posX, this.posY, this.width, this.height);
+		
+		switch(type) {
+		case "death":
+			app.image(this.enemyimage, this.posX, this.posY, this.width, this.height);
+			break;
+			
+		case "apathy":
+			app.image(this.enemyimage, this.posX + 15, this.posY - 6, this.width - 26, this.height + 4);
+			break;
+			
+		case "forget":
+			app.image(this.enemyimage, this.posX + 15, this.posY - 6, this.width - 24, this.height + 4);
+			break;
+			
+		case "unkwon":
+			app.image(this.enemyimage, this.posX + 15, this.posY - 6, this.width - 26, this.height + 4);
+			break;
+		}
+		
 	}
 
 	public void changeDirection(String type) {

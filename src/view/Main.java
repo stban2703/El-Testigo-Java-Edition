@@ -98,7 +98,7 @@ public class Main extends PApplet {
 	public void setup() {
 		background(155);
 
-		screen = 5;
+		screen = 0;
 		starsCount = 0;
 
 		// Arduino
@@ -113,14 +113,26 @@ public class Main extends PApplet {
 
 		this.starImage = loadImage("../img/star.png");
 
+		// Add enemies
 		deathImage = loadImage("../img/muerte.png");
 		apathyImage = loadImage("../img/apatia.png");
 		forgetImage = loadImage("../img/olvido.png");
 		unkwonImage = loadImage("../img/desconocimiento.png");
 
-		// Add enemies
+		
 		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, 49, 49, "death", 1, 0, 7, 3,
 				false, deathImage, this));
+		
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 4, 49, 49, "apathy", 0, 1, 7, 3,
+				false, apathyImage, this));
+		
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 2, 49, 49, "forget", -1, 0, 7, 3,
+				false, forgetImage, this));
+		
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 10, 49, 49, "unkwon", -1, 0, 7, 3,
+				false, unkwonImage, this));
+		
+		
 
 		this.firstImage = loadImage("../img/pantalla01.jpg");
 		this.secondImage = loadImage("../img/pantalla02.jpg");
@@ -577,7 +589,7 @@ public class Main extends PApplet {
 			
 				
 				if (enemy.getPosX() == bottomLeftRight.getPosX() && enemy.getPosY() == bottomLeftRight.getPosY() && !enemy.isChanged()) {
-					String newDirection = topBottomRight.randomDirection();
+					String newDirection = bottomLeftRight.randomDirection();
 					enemy.changeDirection(newDirection);
 				}
 				
