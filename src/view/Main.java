@@ -12,6 +12,7 @@ import model.Star;
 import model.Tile;
 import processing.core.PApplet;
 import processing.core.PImage;
+//import processing.video.*;
 import processing.serial.Serial;
 
 public class Main extends PApplet {
@@ -22,8 +23,9 @@ public class Main extends PApplet {
 
 	Serial serial;
 
+	// Counter
 	private int screen;
-	private int starsCount = 0;
+	private int starsCount;
 
 	// Grid
 	private int rows = 11;
@@ -41,6 +43,9 @@ public class Main extends PApplet {
 	private PImage playerImage;
 	private int playerMatX = 7;
 	private int playerMatY = 7;
+
+	// Lives
+	private PImage heart;
 
 	// Stars
 	private ArrayList<Star> starList = new ArrayList<Star>();
@@ -64,6 +69,7 @@ public class Main extends PApplet {
 	private PImage thirdImage;
 	private PImage fourthImage;
 	private PImage fifthImage;
+	private PImage deathScreen;
 
 	// Enemies path
 	private Path leftBottom;
@@ -118,6 +124,8 @@ public class Main extends PApplet {
 		this.player = new Player(7 + tilezeroX + tileWidth * playerMatX, 3 + tilezeroY + tileWidth * playerMatY, 32, 45,
 				49, 3, 0, this.playerImage, this);
 
+		// Images
+		this.heart = loadImage("../img/vida.png");
 		this.starImage = loadImage("../img/star.png");
 		this.graveImage = loadImage("../img/tumba.png");
 
@@ -130,14 +138,14 @@ public class Main extends PApplet {
 		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, 49, 49, "death", 1, 0, 7, 3,
 				false, deathImage, this));
 
-		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 4, 49, 49, "apathy", 0, 1, 7, 3,
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 4, 49, 49, "apathy", 0, 1, 7, 1,
 				false, apathyImage, this));
 
 		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 2, 49, 49, "forget", -1, 0, 7,
-				3, false, forgetImage, this));
+				2, false, forgetImage, this));
 
 		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 17, tilezeroY + tileWidth * 10, 49, 49, "unkwon", -1, 0, 7,
-				3, false, unkwonImage, this));
+				2, false, unkwonImage, this));
 
 		this.firstImage = loadImage("../img/pantalla01.jpg");
 		this.secondImage = loadImage("../img/pantalla02.jpg");
@@ -145,6 +153,7 @@ public class Main extends PApplet {
 		this.fourthImage = loadImage("../img/pantalla04.jpg");
 		this.fifthImage = loadImage("../img/pantalla05.jpg");
 		this.gameplayImage = loadImage("../img/mapa.jpg");
+		this.deathScreen = loadImage("../img/pantallamuerte.jpg");
 
 		for (int i = 0; i < this.rows; i++) {
 			for (int j = 0; j < this.colums; j++) {
@@ -421,11 +430,16 @@ public class Main extends PApplet {
 			textSize(20);
 			text(starsCount, 895, 45);
 
+			// Paint lives
+			for (int i = 0; i < this.player.getLives(); i++) {
+				image(this.heart, 1041 + (i * 25), 31, 22, 22);
+			}
+
 			// Paint player
 			this.player.paint();
 
 			// Generate star
-			if (frameCount % 60 == 0) {
+			if (frameCount % 120 == 0) {
 
 				// int randomRow = (int) Math.floor(random(11));
 				// int randomColum = (int) Math.floor(random(22));
@@ -442,7 +456,7 @@ public class Main extends PApplet {
 			}
 
 			// Generate graves
-			if (frameCount % 70 == 0) {
+			if (frameCount % 120 == 0) {
 
 				int random = (int) Math.floor(random(spawnTiles.size()));
 
@@ -452,6 +466,7 @@ public class Main extends PApplet {
 					graveList.add(new Grave(randomTile.getPosX() + 9, randomTile.getPosY() + 9, random, 30, 30,
 							this.graveImage, this));
 					randomTile.setOccupied(true);
+					serial.write("ledoff\n");
 				}
 				// }
 			}
@@ -484,25 +499,7 @@ public class Main extends PApplet {
 					starList.remove(i);
 					serial.write("ledon\n");
 					starsCount++;
-
 				}
-
-			}
-
-			// Get graves
-			for (int i = 0; i < this.graveList.size(); i++) {
-				Grave grave = this.graveList.get(i);
-				float graveX = grave.getPosX();
-				float graveY = grave.getPosY();
-
-				if (graveX > playerX && graveX < playerX + playerWidth && graveY > playerY
-						&& graveY < playerY + playerHeight) {
-
-					spawnTiles.get(i).setOccupied(false);
-					graveList.remove(i);
-					serial.write("ledoff\n");
-				}
-
 			}
 
 			// Paint enemies
@@ -678,10 +675,15 @@ public class Main extends PApplet {
 
 				if (playerX >= enemyX && playerX < enemyX + enemyWidth && playerY > enemyY
 						&& playerY < enemyY + enemyHeight) {
-					System.out.println("Colision");
+					player.getDamage(enemy.getDamage());
 				}
 
 			}
+			
+			// Defeat
+			if(this.player.getLives() <= 0) {
+				this.screen = 6;
+			};
 
 			/*
 			 * leftBottom.paint(); leftBottom2.paint(); leftBottom3.paint();
@@ -704,6 +706,10 @@ public class Main extends PApplet {
 
 			break;
 
+		case 6:
+			image(this.deathScreen, 0, 0, 1200, 700);
+			break;
+			
 		default:
 			break;
 		}
@@ -712,7 +718,6 @@ public class Main extends PApplet {
 
 	public void mousePressed() {
 
-		System.out.println("MouseX: " + mouseX + "\n" + "MouseY: " + mouseY);
 		switch (screen) {
 		case 0:
 			if (mouseX > 507 && mouseX < 507 + 186 && mouseY > 479 && mouseY < 479 + 52) {

@@ -12,6 +12,7 @@ public class Player {
 	private int lives;
 	private int stars;
 	private int speed;
+	private boolean hurted;
 	private PApplet app;
 	private PImage playerImage;
 
@@ -24,12 +25,16 @@ public class Player {
 		this.speed = speed;
 		this.lives = lives;
 		this.stars = stars;
+		this.hurted = false;
 		this.app = app;
 		this.playerImage = image;
 	}
 
 	public void paint() {
 		this.app.image(this.playerImage, this.posX, this.posY, this.width, this.height);
+		if(this.hurted && app.frameCount%120 ==0) {
+			this.hurted = false;
+		}
 	}
 
 	public void moveUp() {
@@ -46,6 +51,14 @@ public class Player {
 
 	public void moveRight() {
 		this.posX += speed;
+	}
+
+	public void getDamage(int i) {
+		if (!this.hurted) {
+			this.lives -= i;
+			this.hurted = true;
+			System.out.println(lives);
+		}
 	}
 
 	public float getPosX() {
@@ -104,10 +117,12 @@ public class Player {
 		this.stars = stars;
 	}
 
-	/*
-	 * public PImage getImg() { return img; }
-	 * 
-	 * public void setImg(PImage img) { this.img = img; }
-	 */
+	public boolean isHurted() {
+		return hurted;
+	}
+
+	public void setHurted(boolean hurted) {
+		this.hurted = hurted;
+	}
 
 }
