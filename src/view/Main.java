@@ -12,7 +12,6 @@ import model.Star;
 import model.Tile;
 import processing.core.PApplet;
 import processing.core.PImage;
-//import processing.video.*;
 import processing.serial.Serial;
 
 public class Main extends PApplet {
@@ -122,7 +121,7 @@ public class Main extends PApplet {
 
 		this.playerImage = loadImage("../img/player.png");
 		this.player = new Player(7 + tilezeroX + tileWidth * playerMatX, 3 + tilezeroY + tileWidth * playerMatY, 32, 45,
-				49, 3, 0, this.playerImage, this);
+				49, 5, 0, this.playerImage, this);
 
 		// Images
 		this.heart = loadImage("../img/vida.png");
@@ -135,11 +134,11 @@ public class Main extends PApplet {
 		forgetImage = loadImage("../img/olvido.png");
 		unkwonImage = loadImage("../img/desconocimiento.png");
 
-		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, 49, 49, "death", 1, 0, 7, 3,
-				false, deathImage, this));
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 6, tilezeroY + tileWidth * 0, 49, 49, "death", 1, 0, 7,
+				5, false, deathImage, this));
 
-		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 4, 49, 49, "apathy", 0, 1, 7, 1,
-				false, apathyImage, this));
+		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 0, tilezeroY + tileWidth * 4, 49, 49, "apathy", 0, 1, 7, 
+				1, false, apathyImage, this));
 
 		this.enemyList.add(new Enemy(tilezeroX + tileWidth * 21, tilezeroY + tileWidth * 2, 49, 49, "forget", -1, 0, 7,
 				2, false, forgetImage, this));
@@ -456,7 +455,7 @@ public class Main extends PApplet {
 			}
 
 			// Generate graves
-			if (frameCount % 120 == 0) {
+			if (frameCount % 80 == 0) {
 
 				int random = (int) Math.floor(random(spawnTiles.size()));
 
@@ -679,11 +678,12 @@ public class Main extends PApplet {
 				}
 
 			}
-			
+
 			// Defeat
-			if(this.player.getLives() <= 0) {
+			if (this.player.getLives() <= 0) {
 				this.screen = 6;
-			};
+			}
+			;
 
 			/*
 			 * leftBottom.paint(); leftBottom2.paint(); leftBottom3.paint();
@@ -709,7 +709,7 @@ public class Main extends PApplet {
 		case 6:
 			image(this.deathScreen, 0, 0, 1200, 700);
 			break;
-			
+
 		default:
 			break;
 		}
@@ -805,8 +805,12 @@ public class Main extends PApplet {
 		try {
 			String mensajeRecibido = serial.readStringUntil('\n');
 			if (mensajeRecibido != null) {
-				mensajeRecibido = mensajeRecibido.trim();
-				System.out.println(mensajeRecibido);
+
+				if (mensajeRecibido.contains("death")) {
+					mensajeRecibido = mensajeRecibido.trim();
+					System.out.println(mensajeRecibido);
+					screen = 6;
+				}
 			}
 		} catch (RuntimeException e) {
 			e.printStackTrace();

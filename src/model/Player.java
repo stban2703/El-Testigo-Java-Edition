@@ -57,7 +57,6 @@ public class Player {
 		if (!this.hurted) {
 			this.lives -= i;
 			this.hurted = true;
-			System.out.println(lives);
 		}
 	}
 
