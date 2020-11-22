@@ -68,6 +68,9 @@ public class Main extends PApplet {
 	private PImage thirdImage;
 	private PImage fourthImage;
 	private PImage fifthImage;
+	private PImage sixthImage;
+	private PImage seventhImage;
+	private PImage eightImage;
 	private PImage deathScreen;
 
 	// Enemies path
@@ -151,6 +154,9 @@ public class Main extends PApplet {
 		this.thirdImage = loadImage("../img/pantalla03.jpg");
 		this.fourthImage = loadImage("../img/pantalla04.jpg");
 		this.fifthImage = loadImage("../img/pantalla05.jpg");
+		this.sixthImage = loadImage("../img/pantalla06.jpg");
+		this.seventhImage = loadImage("../img/pantalla07.jpg");
+		this.eightImage = loadImage("../img/pantalla08.jpg");
 		this.gameplayImage = loadImage("../img/mapa.jpg");
 		this.deathScreen = loadImage("../img/pantallamuerte.jpg");
 
@@ -390,7 +396,8 @@ public class Main extends PApplet {
 
 		case 2:
 			image(this.thirdImage, 0, 0, 1200, 700);
-			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+			if ((mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52)
+					|| (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47)) {
 				cursor(HAND);
 			} else {
 				cursor(ARROW);
@@ -399,23 +406,55 @@ public class Main extends PApplet {
 
 		case 3:
 			image(this.fourthImage, 0, 0, 1200, 700);
-			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+			if ((mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52)
+					|| (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47)) {
 				cursor(HAND);
 			} else {
 				cursor(ARROW);
 			}
 			break;
-
+		
 		case 4:
 			image(this.fifthImage, 0, 0, 1200, 700);
-			if (mouseX > 600 && mouseX < 600 + 222 && mouseY > 582 && mouseY < 582 + 52) {
+			if ((mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52)
+					|| (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47)) {
+				cursor(HAND);
+			} else {
+				cursor(ARROW);
+			}
+			break;
+			
+		case 5:
+			image(this.sixthImage, 0, 0, 1200, 700);
+			if ((mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52)
+					|| (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47)) {
 				cursor(HAND);
 			} else {
 				cursor(ARROW);
 			}
 			break;
 
-		case 5:
+		case 6:
+			image(this.seventhImage, 0, 0, 1200, 700);
+			if ((mouseX > 600 && mouseX < 600 + 222 && mouseY > 582 && mouseY < 582 + 52)
+					|| (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47)) {
+				cursor(HAND);
+			} else {
+				cursor(ARROW);
+			}
+			break;
+			
+		case 7:
+			image(this.eightImage, 0, 0, 1200, 700);
+			if ((mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52)
+					|| (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47)) {
+				cursor(HAND);
+			} else {
+				cursor(ARROW);
+			}
+			break;
+
+		case 8:
 			cursor(ARROW);
 
 			for (int i = 0; i < this.rows; i++) {
@@ -681,7 +720,7 @@ public class Main extends PApplet {
 
 			// Defeat
 			if (this.player.getLives() <= 0) {
-				this.screen = 6;
+				this.screen = 9;
 			}
 			;
 
@@ -706,7 +745,7 @@ public class Main extends PApplet {
 
 			break;
 
-		case 6:
+		case 9:
 			image(this.deathScreen, 0, 0, 1200, 700);
 			break;
 
@@ -732,27 +771,64 @@ public class Main extends PApplet {
 			break;
 
 		case 2:
+			if (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47) {
+				screen = 1;
+			}
+			
 			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				screen = 3;
 			}
 			break;
 
 		case 3:
+			if (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47) {
+				screen = 2;
+			}
+			
 			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				screen = 4;
 			}
 			break;
-
+			
 		case 4:
-			if (mouseX > 600 && mouseX < 600 + 222 && mouseY > 582 && mouseY < 582 + 52) {
+			if (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47) {
+				screen = 3;
+			}
+			
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
 				screen = 5;
 			}
 			break;
-
+			
 		case 5:
-
+			if (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47) {
+				screen = 4;
+			}
+			
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+				screen = 6;
+			}
 			break;
 
+		case 6:
+			if (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47) {
+				screen = 5;
+			}
+			
+			if (mouseX > 600 && mouseX < 600 + 222 && mouseY > 582 && mouseY < 582 + 52) {
+				screen = 7;
+			}
+			break;
+			
+		case 7:
+			if (mouseX > 39 && mouseX < 39 + 26 && mouseY > 50 && mouseY < 50 + 47) {
+				screen = 6;
+			}
+			
+			if (mouseX > 907 && mouseX < 907 + 222 && mouseY > 571 && mouseY < 571 + 52) {
+				screen = 8;
+			}
+			break;
 		default:
 			break;
 		}
@@ -761,7 +837,7 @@ public class Main extends PApplet {
 	public void keyPressed() {
 
 		switch (screen) {
-		case 5:
+		case 8:
 			// logic.keyEvents();
 			if (keyCode == UP) {
 				// if we aren't in the top row and the cell above us doesn't contain an obstacle
@@ -809,7 +885,7 @@ public class Main extends PApplet {
 				if (mensajeRecibido.contains("death")) {
 					mensajeRecibido = mensajeRecibido.trim();
 					System.out.println(mensajeRecibido);
-					screen = 6;
+					screen = 9;
 				}
 			}
 		} catch (RuntimeException e) {
